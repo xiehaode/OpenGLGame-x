@@ -2,8 +2,8 @@
 // Created by 谢豪 on 2025/8/20.
 //
 
-#include "mShoot.h"
-#include <glad/glad.h>
+#include "../include/mShoot.h"
+#include <../include/glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <iostream>

@@ -3,6 +3,9 @@ project(OpenGLGame2)
 
 find_package(OpenGL REQUIRED)
 
+# 查找 FreeType 库
+find_package(Freetype REQUIRED)
+
 # 查找GLFW3（修改后）
 find_package(glfw3 REQUIRED)  # 注意：在Ubuntu中通常是小写"glfw3"
 find_package(assimp REQUIRED)
@@ -16,6 +19,7 @@ set(RESOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resources)
 include_directories(
         ${CMAKE_SOURCE_DIR}/include
         ${GLFW3_INCLUDE_DIRS}  # 添加GLFW3头文件路径
+        ${FREETYPE_INCLUDE_DIRS}
 )
 
 # 添加可执行文件（修正语法）
@@ -30,8 +34,10 @@ set(SOURCE_FILES
         include/mFloor.h
         src/mModel.cpp
         include/mModel.h
-        include/mShoot.cpp
+        src/mShoot.cpp
         include/mShoot.h
+        src/mText.cpp
+        include/mText.h
 )
 
 add_executable(OpenGLGame2 ${SOURCE_FILES})  # 修正变量引用
@@ -41,4 +47,5 @@ target_link_libraries(OpenGLGame2
         ${OPENGL_LIBRARIES}  # 修正变量名
         glfw  # Ubuntu中直接链接"glfw"
         assimp::assimp
+        ${FREETYPE_LIBRARIES}
 )

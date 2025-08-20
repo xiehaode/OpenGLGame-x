@@ -14,7 +14,7 @@ namespace Game{
     float myGame::lastX = 0.0f;
     float myGame::lastY = 0.0f;
     bool myGame::firstMouse = true;
-
+    mShoot *myGame::mshoot = nullptr;
 
      myGame::myGame() {
          myGlfwInit();
@@ -22,9 +22,21 @@ namespace Game{
          sky = new skybox();
          floor = new mFloor();
          model = new mModel();
+         mshoot = new mShoot();
+         text = new mText();
      }
 
-    void myGame::start() {
+     myGame::~myGame() {
+         delete camera;
+         delete sky;
+         delete floor;
+         delete model;
+         delete text;
+         delete camera;
+         delete mshoot;
+     }
+
+     void myGame::start() {
         glEnable(GL_DEPTH_TEST);
 
         stbi_set_flip_vertically_on_load(true);
@@ -57,6 +69,15 @@ namespace Game{
             floor->draw(camera->GetViewMatrix(),projection);
             //draw model
             model->draw(camera->GetViewMatrix(),projection);
+            //update mshoot and draw
+            mshoot->update(deltaTime);
+            mshoot->draw(camera->GetViewMatrix(),projection);
+            // 在myMainLoop中添加正交投影（放在绘制文本前）
+            glm::mat4 textProjection = glm::ortho(0.0f, (float)SCR_WIDTH, 0.0f, (float)SCR_HEIGHT);
+            //draw text
+            string scoreText = "score:" + to_string(5);
+            text->draw(scoreText.c_str(),0,0,1.0f,glm::vec3(0.0f,0.0f,1.0f), textProjection);
+
             glfwSwapBuffers(window);
             glfwPollEvents();
         }
@@ -89,7 +110,7 @@ namespace Game{
         glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
         glfwSetCursorPosCallback(window, mouse_callback);
         glfwSetScrollCallback(window, scroll_callback);
-
+         glfwSetMouseButtonCallback(window, mouse_button_callback);
         // tell GLFW to capture our mouse
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
          // 设置鼠标模式：禁用光标（隐藏并锁定在窗口内）
@@ -159,6 +180,16 @@ void myGame::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     camera->ProcessMouseScroll(static_cast<float>(yoffset));
 }
+
+void myGame::mouse_button_callback(GLFWwindow *window, int button, int action, int mods) {
+         // 左键按下时
+         if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+             std::cout << "左键被按下" << std::endl;
+             mshoot->shoot(camera->Position,camera->Front,10,3,glm::vec3(1.0f, 0.2f, 0.2f));
+             // 可在此处添加交互逻辑（如选中物体）
+         }
+
+     }
 
 // utility function for loading a 2D texture from file
 // ---------------------------------------------------

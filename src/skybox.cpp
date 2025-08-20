@@ -3,7 +3,7 @@
 //
 #include <stb_image.h>
 #include "skybox.h"
-
+#include <glm/ext/matrix_transform.hpp>
 
 skybox::skybox() {
     cubeShader = new Shader("shader/6.1.cubemaps.vs", "shader/6.1.cubemaps.fs");
@@ -16,11 +16,14 @@ skybox::skybox() {
 
     skyboxShader->use();
     skyboxShader->setInt("skybox", 0);
+    p.x=4.0f;p.z=0.0f;
 }
 
 void skybox::draw(glm::mat4 view,glm::mat4 projection) {
     cubeShader->use();
     glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(p.x, -0.5f, p.z));
+
     cubeShader->setMat4("view", view);
     cubeShader->setMat4("projection", projection);
     cubeShader->setMat4("model", model);
@@ -31,6 +34,7 @@ void skybox::draw(glm::mat4 view,glm::mat4 projection) {
     glBindVertexArray(0);
     glDepthFunc(GL_LEQUAL);
     //draw skybox
+    model = glm::mat4(1.0f);
     skyboxShader->use();
     skyboxShader->setMat4("view", glm::mat4(glm::mat3(view)));
     skyboxShader->setMat4("projection", projection);
@@ -43,6 +47,11 @@ void skybox::draw(glm::mat4 view,glm::mat4 projection) {
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glBindVertexArray(0);
     glDepthFunc(GL_LESS); // set depth function back to default
+}
+
+void skybox::setP(float x1, float z1) {
+    p.x = x1;
+    p.z = z1;
 }
 
 void skybox::initBuff() {

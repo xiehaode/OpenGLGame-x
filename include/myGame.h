@@ -23,6 +23,8 @@
 #include "skyBox.h"
 #include "mFloor.h"
 #include "mModel.h"
+#include "mShoot.h"
+#include "mText.h"
 
 namespace Game {
 
@@ -37,6 +39,7 @@ namespace Game {
     class myGame {
     public:
         explicit myGame();
+        ~myGame();
         void start();
         int myMainLoop();
         //返回负数表示初始化失败
@@ -44,6 +47,7 @@ namespace Game {
         static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
         static void mouse_callback(GLFWwindow* window, double xpos, double ypos);
         static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+        static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
         void processInput(GLFWwindow *window);
 
 
@@ -67,7 +71,9 @@ namespace Game {
         skybox *sky;
         mFloor *floor;
         mModel *model;
+        mText *text;
 
+        static mShoot *mshoot;
         // 游戏状态
         GameState  State;
         GLboolean  Keys[1024];
