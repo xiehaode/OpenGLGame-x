@@ -19,7 +19,9 @@
 #include <learnopengl/camera.h>
 #include <learnopengl/model.h>
 
+#include <random>
 #include <iostream>
+#include <collisionDetector.h>
 #include "skyBox.h"
 #include "mFloor.h"
 #include "mModel.h"
@@ -49,7 +51,7 @@ namespace Game {
         static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
         static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
         void processInput(GLFWwindow *window);
-
+        static glm::vec3 getRandomXZPosition();
 
 
     private:
@@ -72,9 +74,10 @@ namespace Game {
         mFloor *floor;
         mModel *model;
         mText *text;
-
+        collisionDetector *cd;
         static mShoot *mshoot;
         // 游戏状态
+        int score;
         GameState  State;
         GLboolean  Keys[1024];
         GLuint     Width, Height;

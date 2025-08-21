@@ -7,16 +7,17 @@
 #include <learnopengl/shader_m.h>
 #include <vector>
 
-struct position {
+struct skyPosition {
  float x;
  float z;
+
 };
 
 class skybox {
 public:
      skybox();
     void draw(glm::mat4 view,glm::mat4 projection);
-    position p;
+    skyPosition p;
     void setP(float x1,float z1);
 private:
      void initBuff();

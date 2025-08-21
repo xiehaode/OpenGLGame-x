@@ -38,6 +38,8 @@ set(SOURCE_FILES
         include/mShoot.h
         src/mText.cpp
         include/mText.h
+        src/collisionDetector.cpp
+        include/collisionDetector.h
 )
 
 add_executable(OpenGLGame2 ${SOURCE_FILES})  # 修正变量引用

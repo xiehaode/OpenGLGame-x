@@ -24,6 +24,8 @@ namespace Game{
          model = new mModel();
          mshoot = new mShoot();
          text = new mText();
+         cd= new collisionDetector();
+         score=0;
      }
 
      myGame::~myGame() {
@@ -34,6 +36,7 @@ namespace Game{
          delete text;
          delete camera;
          delete mshoot;
+         delete cd;
      }
 
      void myGame::start() {
@@ -55,6 +58,15 @@ namespace Game{
             deltaTime = currentFrame - lastFrame;
             lastFrame = currentFrame;
 
+            //do collision test
+            for (auto & bullet : mshoot->bullets) {
+                int frag =cd->checkCollision(bullet.position,0.1f,sky->p.x-0.5f,sky->p.x+0.5f,sky->p.z-0.5f,sky->p.z+0.5f);
+                 if (frag) {
+                     glm::vec3 cur = getRandomXZPosition();
+                     sky->setP(cur.x,cur.z);
+                     score++;
+                 }
+            }
             // input
             // -----
             processInput(window);
@@ -75,7 +87,7 @@ namespace Game{
             // 在myMainLoop中添加正交投影（放在绘制文本前）
             glm::mat4 textProjection = glm::ortho(0.0f, (float)SCR_WIDTH, 0.0f, (float)SCR_HEIGHT);
             //draw text
-            string scoreText = "score:" + to_string(5);
+            string scoreText = "score:" + to_string(score);
             text->draw(scoreText.c_str(),0,0,1.0f,glm::vec3(0.0f,0.0f,1.0f), textProjection);
 
             glfwSwapBuffers(window);
@@ -127,8 +139,23 @@ namespace Game{
     }
 
 
+    glm::vec3 myGame::getRandomXZPosition() {
+         // 随机数引擎（仅初始化一次）
+         static std::random_device rd;
+         static std::mt19937 gen(rd());
+         // 定义0到10之间的均匀分布（不包含10）
+         static std::uniform_real_distribution<float> dist(0.0f, 10.0f);
+
+         // 生成X和Z轴随机值，Y轴设为0（或根据需求调整）
+         float x = dist(gen);
+         float z = dist(gen);
+
+         return glm::vec3(x, 0.0f, z); // Y轴可根据需要修改
+     }
+
 void myGame::processInput(GLFWwindow *window)
 {
+
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 

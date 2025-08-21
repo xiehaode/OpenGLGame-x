@@ -22,7 +22,7 @@ skybox::skybox() {
 void skybox::draw(glm::mat4 view,glm::mat4 projection) {
     cubeShader->use();
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(p.x, -0.5f, p.z));
+    model = glm::translate(model, glm::vec3(p.x,  0.5f, p.z));
 
     cubeShader->setMat4("view", view);
     cubeShader->setMat4("projection", projection);

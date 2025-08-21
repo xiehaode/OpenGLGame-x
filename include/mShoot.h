@@ -31,12 +31,12 @@ public:
     void update(float deltaTime);
     // 渲染所有子弹
     void draw(glm::mat4 view, glm::mat4 projection);
-
+    std::vector<Bullet> bullets;
 private:
     // 初始化子弹渲染所需的缓冲对象
     void initBuffers();
     // 子弹数据
-    std::vector<Bullet> bullets;
+
     // 渲染相关
     Shader* bulletShader;
     unsigned int bulletVAO, bulletVBO;  // 子弹模型（使用简单立方体）

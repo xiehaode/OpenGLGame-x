@@ -6,7 +6,7 @@
 #define MMODEL_H
 #include <learnopengl/shader_m.h>
 #include <learnopengl/model.h>
-struct position {
+struct modelPosition {
     float x;
     float z;
 };
@@ -20,7 +20,7 @@ private:
     void initBuff();
     unsigned int loadTexture(char const * path);
     Model* ourModel;
-    position p;
+    modelPosition p;
     Shader *modelShader;
     // plane VAO
     unsigned int modelVAO, modelVBO;
