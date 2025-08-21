@@ -61,11 +61,17 @@ namespace Game{
             //do collision test
             for (auto & bullet : mshoot->bullets) {
                 int frag =cd->checkCollision(bullet.position,0.1f,sky->p.x-0.5f,sky->p.x+0.5f,sky->p.z-0.5f,sky->p.z+0.5f);
+                int frag1 = cd->checkCollision(bullet.position,0.1f,model->p.x-0.5f,model->p.x+0.5f,model->p.z-0.5f,model->p.z+0.5f);
                  if (frag) {
                      glm::vec3 cur = getRandomXZPosition();
                      sky->setP(cur.x,cur.z);
                      score++;
                  }
+                if (frag1) {
+                    glm::vec3 cur = getRandomXZPosition();
+                    model->setP(cur.x,cur.z);
+                    score++;
+                }
             }
             // input
             // -----
